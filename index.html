@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无毛绒标样管理系统</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/apple-style.css">
+    <!-- 禁止缓存，确保始终加载最新版本 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="login-page" class="page">
+        <div class="login-container">
+            <h1>无毛绒标样管理系统</h1>
+            <div class="login-form">
+                <input type="password" id="password" placeholder="请输入密码" class="password-input">
+                <button id="login-btn" class="btn primary-btn">登录</button>
+                <p class="error-message" id="login-error"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主应用容器 - 初始隐藏 -->
+    <div id="app" class="hidden">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <h1>无毛绒标样管理系统</h1>
+            <nav class="main-nav">
+                <button id="home-btn" class="nav-btn active">主页</button>
+                <button id="history-btn" class="nav-btn">历史记录</button>
+                <button id="settings-btn" class="nav-btn">设置</button>
+            </nav>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="app-content">
+            <!-- 主页/列表页 -->
+            <section id="home-page" class="page">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="搜索批次、类型、存放地点等...">
+                    <button id="search-btn" class="btn">搜索</button>
+                    <button id="add-btn" class="btn primary-btn">添加标样</button>
+                </div>
+                
+                <div class="samples-list" id="samples-container">
+                    <!-- 样品列表将通过JavaScript动态生成 -->
+                    <div class="empty-message">暂无标样记录，请点击"添加标样"按钮添加</div>
+                </div>
+            </section>
+
+            <!-- 详情页 - 初始隐藏 -->
+            <section id="detail-page" class="page hidden">
+                <div class="page-header">
+                    <button id="back-to-list" class="btn back-btn">返回列表</button>
+                    <h2>标样详情</h2>
+                    <div class="action-buttons">
+                        <button id="edit-sample" class="btn">编辑</button>
+                        <button id="share-sample" class="btn">分享</button>
+                        <button id="delete-sample" class="btn danger-btn">删除</button>
+                    </div>
+                </div>
+                
+                <div class="detail-content" id="detail-container">
+                    <!-- 详情内容将通过JavaScript动态生成 -->
+                </div>
+            </section>
+
+            <!-- 编辑页 - 初始隐藏 -->
+            <section id="edit-page" class="page hidden">
+                <div class="page-header">
+                    <button id="back-from-edit" class="btn back-btn">取消</button>
+                    <h2 id="edit-title">添加标样</h2>
+                    <button id="save-sample" class="btn primary-btn">保存</button>
+                </div>
+                
+                <form id="sample-form" class="edit-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="batch">批次</label>
+                            <input type="text" id="batch" name="batch" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="type">类型</label>
+                            <input type="text" id="type" name="type" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="track">道数</label>
+                            <input type="number" id="track" name="track" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="date">时间</label>
+                            <input type="datetime-local" id="date" name="date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="weight">重量</label>
+                            <input type="text" id="weight" name="weight" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="location">存放地点</label>
+                            <input type="text" id="location" name="location" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="images">图片</label>
+                        <div class="image-upload-container">
+                            <input type="file" id="images" name="images" multiple accept="image/*">
+                            <div id="image-preview" class="image-preview"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="notes">备注</label>
+                        <textarea id="notes" name="notes" rows="3"></textarea>
+                    </div>
+                    
+                    <h3>具体数据</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="length">长度</label>
+                            <input type="text" id="length" name="length">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="fineness">细度</label>
+                            <input type="text" id="fineness" name="fineness">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cv">CV</label>
+                            <input type="text" id="cv" name="cv">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dispersion">离散</label>
+                            <input type="text" id="dispersion" name="dispersion">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="coarse">含粗</label>
+                            <input type="text" id="coarse" name="coarse">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="impurity">含杂</label>
+                            <input type="text" id="impurity" name="impurity">
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 历史记录页 - 初始隐藏 -->
+            <section id="history-page" class="page hidden">
+                <h2>修改历史记录</h2>
+                <div class="history-filters">
+                    <input type="text" id="history-search" placeholder="搜索批次或修改人...">
+                    <button id="history-search-btn" class="btn">搜索</button>
+                </div>
+                <div id="history-list" class="history-list">
+                    <!-- 历史记录将通过JavaScript动态生成 -->
+                    <div class="empty-message">暂无修改历史记录</div>
+                </div>
+            </section>
+
+            <!-- 设置页 - 初始隐藏 -->
+            <section id="settings-page" class="page hidden">
+                <h2>系统设置</h2>
+                <div class="settings-container">
+                    <div class="settings-group">
+                        <h3>数据管理</h3>
+                        <button id="export-data" class="btn full-width">导出数据</button>
+                        <button id="import-data" class="btn full-width">导入数据</button>
+                        <input type="file" id="import-file" accept=".json" class="hidden">
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3>系统信息</h3>
+                        <p>版本: 1.0.0</p>
+                        <p>存储空间: <span id="storage-usage">计算中...</span></p>
+                        <p>记录数量: <span id="record-count">计算中...</span></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 修改人信息弹窗 -->
+    <div id="editor-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>请输入修改人信息</h3>
+            <input type="text" id="editor-name" placeholder="请输入您的姓名">
+            <div class="modal-buttons">
+                <button id="cancel-edit" class="btn">取消</button>
+                <button id="confirm-edit" class="btn primary-btn">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 二维码分享弹窗 -->
+    <div id="qrcode-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>二维码分享</h3>
+            <div id="qrcode-container"></div>
+            <p>扫描二维码查看标样信息</p>
+            <button id="close-qrcode" class="btn">关闭</button>
+        </div>
+    </div>
+
+    <!-- 确认删除弹窗 -->
+    <div id="confirm-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>确认删除</h3>
+            <p>您确定要删除这个标样记录吗？此操作不可撤销。</p>
+            <div class="modal-buttons">
+                <button id="cancel-delete" class="btn">取消</button>
+                <button id="confirm-delete" class="btn danger-btn">确认删除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 加载脚本 -->
+    <script src="js/qrcode.min.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
